@@ -4,16 +4,11 @@ import ImageGalleryItem from './ImageGalleryItem';
 // import PropTypes from 'prop-types';
 import style from './ImageGallery.module.css';
 
-// const INITIAL_STATE = {
-//   searchRequest: '',
-//   number: '',
-// };
-
-// const ImageGallery = ({ list, handlePreview }) => {
-const ImageGallery = ({ data }) => {
+const ImageGallery = ({ images }) => {
   const renderGallery = () =>
-    data.map(({ id, largeImageURL, webformatURL, tags }) => (
+    images.map(({ id, largeImageURL, webformatURL, tags }) => (
       <ImageGalleryItem
+        className={style.ImageGalleryItem}
         key={id}
         tags={tags}
         lgImage={largeImageURL}
@@ -24,7 +19,7 @@ const ImageGallery = ({ data }) => {
 
   return (
     <div>
-      <ul className={style.GalleryList}>{data ? renderGallery() : null}</ul>
+      <ul className={style.ImageGallery}>{images ? renderGallery() : null}</ul>
     </div>
   );
 };

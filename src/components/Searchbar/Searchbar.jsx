@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
-import ImageGallery from 'components/ImageGallery/ImageGallery';
-import { fetchImages } from 'components/services/fetchImages';
 // import { Request } from 'components/utils/Request';
 // import { fetchImages } from '../services/fetchImages';
 // import PropTypes from 'prop-types';
@@ -15,26 +13,9 @@ import style from './Searchbar.module.css';
 export default class Searchbar extends Component {
   state = {
     searchRequest: '',
-    status: null,
-    images: [],
-    galleryPage: 1,
+
     //   ...INITIAL_STATE,
   };
-
-  async shouldComponentUpdate(nextProps, nextState) {
-    const data = await fetchImages(nextState.searchRequest);
-    this.setState({ images: data.data.hits });
-    ImageGallery(this.state.images);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const prevSearch = prevProps.searchRequest;
-    const currentSearch = this.props.searchRequest;
-
-    if (prevSearch !== currentSearch) {
-      this.setState({ searchRequest: currentSearch });
-    }
-  }
 
   handleRequestChange = event => {
     this.setState({ searchRequest: event.currentTarget.value.toLowerCase() });
@@ -47,13 +28,6 @@ export default class Searchbar extends Component {
     }
     this.props.onSearch(this.state.searchRequest);
     this.setState({ searchRequest: '' });
-    // fetchImages(this.state.searchRequest, this.state.galleryPage)
-    //   .then(({ data }) => {
-    //     ImageGallery(data.hits);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
   };
 
   render() {
