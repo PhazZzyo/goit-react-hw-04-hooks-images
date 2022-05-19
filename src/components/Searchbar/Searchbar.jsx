@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
-// import { Request } from 'components/utils/Request';
-// import { fetchImages } from '../services/fetchImages';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import style from './Searchbar.module.css';
 
-// const INITIAL_STATE = {
-//   searchRequest: '',
-//   number: '',
-// };
-
 export default class Searchbar extends Component {
+  static defaultProps = {
+    onSearch: PropTypes.func.isRequired,
+  };
+
   state = {
     searchRequest: '',
-
-    //   ...INITIAL_STATE,
   };
 
   handleRequestChange = event => {
@@ -44,8 +39,8 @@ export default class Searchbar extends Component {
             name="searchRequest"
             value={this.state.searchRequest}
             onChange={this.handleRequestChange}
-            // autocomplete="off"
-            // autofocus
+            autocomplete="off"
+            autofocus
             placeholder="Search images and photos"
           />
         </form>
@@ -53,50 +48,3 @@ export default class Searchbar extends Component {
     );
   }
 }
-
-//   <Request request={fetchImages(currentSearch, galleryPage)}>
-//     {({ images, error, loading }) => {
-//       if (loading) {
-//         return toast.info('Loading...');
-//       }
-
-//       if (error) {
-//         return toast.error({ error });
-//       }
-
-//       if (images) {
-//         return <div>{images && console.log(images)}</div>;
-//       }
-//     }}
-
-// );
-
-// const imagesArray = fetchImages(currentSearch, galleryPage);
-
-// fetchImages(currentSearch, galleryPage)
-//   .then(images =>
-//     this.setState({ images: { ...images }, status: 'resolved' })
-//   )
-//   //; console.log(images.hits);
-//   // if (images.hits.length === 0) {
-//   //   return toast.error('There is no images found with that search request');
-//   // }
-//   // toast
-//   //   .success(`'Hooray! We found ${images.totalHits} images.'`)
-//   .catch(error => this.setState({ error, status: 'rejected' }));
-
-// fetchImages(this.state.searchRequest, this.state.galleryPage).then(
-//   images => this.setState({ images: { ...images }, status: 'resolved' }),
-//   ImageGallery(this.state.images)
-// );
-// console.log(this.state.images.hits);
-// if (this.state.images.hits.length === 0) {
-//   return toast.error('There is no images found with that search request');
-// }
-// toast
-//   .success(`'Hooray! We found ${this.state.images.totalHits} images.'`)
-//   .catch(error => this.setState({ error, status: 'rejected' }));
-
-// static propTypes = {
-//   onSubmit: PropTypes.func.isRequired,
-// };

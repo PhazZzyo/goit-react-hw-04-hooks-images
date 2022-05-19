@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+// import { Grid } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import PropTypes from 'prop-types';
@@ -10,7 +12,6 @@ import { fetchImages } from 'components/services/fetchImages';
 export default class App extends Component {
   state = {
     searchRequest: '',
-    status: null,
     images: [],
     galleryPage: 1,
     error: null,
@@ -20,6 +21,10 @@ export default class App extends Component {
 
   async shouldComponentUpdate(nextProps, nextState) {
     const data = await fetchImages(nextState.searchRequest);
+    this.setState({ loading: true });
+    // if (this.state.images.length === 0) {
+    //   return toast.error('There is no images found with that search request');
+    // }
     this.setState({ images: data.data.hits });
     ImageGallery(this.state.images);
   }
@@ -32,12 +37,12 @@ export default class App extends Component {
       this.setState({ searchRequest: currentSearch });
       fetchImages(this.state.searchRequest, this.state.galleryPage).then(
         images => {
-          if (images.ok) {
-            return images.json();
-          }
-          return Promise.reject(
-            toast.error('There is no images found with that search request')
-          )
+          // if (!images) {
+          //   return toast.error(
+          //     'There is no images found with that search request'
+          //   );
+          // }
+          return images
             .then(images => {
               this.setState(() => {
                 return { images: [...this.state.images, ...images.hits] };
