@@ -1,4 +1,3 @@
-// import { toast } from 'react-toastify';
 import ImageGalleryItem from './ImageGalleryItem';
 
 // import PropTypes from 'prop-types';
