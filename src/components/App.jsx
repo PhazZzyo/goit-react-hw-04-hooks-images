@@ -18,27 +18,31 @@ export default class App extends Component {
     moreButton: false,
     error: null,
     isLoading: 'false',
-    //   ...INITIAL_STATE,
   };
 
-  async componentDidUpdate(prevProps, prevState) {
-    const { searchRequest, galleryPage } = this.state;
+  componentDidUpdate(prevProps, prevState) {
     const prevSearch = prevProps.searchRequest;
     const currentSearch = this.props.searchRequest;
 
     if (prevSearch !== currentSearch) {
       this.setState({ searchRequest: currentSearch });
-      this.setState({ isLoading: true });
+      this.updateImages();
+    }
+  }
 
-      try {
-        const data = await fetchImages(searchRequest, galleryPage);
-        this.setState({ images: data.data.hits });
-      } catch (error) {
-        this.setState({ error });
-      } finally {
-        ImageGallery(this.state.images);
-        this.setState({ isLoading: false });
-      }
+  async updateImages() {
+    const { searchRequest, galleryPage } = this.state;
+
+    this.setState({ isLoading: true });
+
+    try {
+      const data = await fetchImages(searchRequest, galleryPage);
+      console.log(data);
+      this.setState({ images: [...this.state.images, ...data.hits] });
+    } catch (error) {
+      this.setState({ error });
+    } finally {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -57,15 +61,15 @@ export default class App extends Component {
   //   if (prevSearch !== currentSearch) {
   //     this.setState({ searchRequest: currentSearch });
   //     // fetchImages(this.state.searchRequest, this.state.galleryPage)
-  //     //   .then(images => {
-  //     //     if (!images.hits) {
-  //     //       return toast.error(
-  //     //         'There is no images found with that search request'
-  //     //       );
-  //     //     }
-  //     //     this.setState(() => {
-  //     //       return { images: [...this.state.images, ...images.hits] };
-  //     //     });
+  // .then(images => {
+  //   if (!images.hits) {
+  //     return toast.error(
+  //       'There is no images found with that search request'
+  //     );
+  //   }
+  //   this.setState(() => {
+  //     return { images: [...this.state.images, ...images.hits] };
+  //   });
   //     //   })
   //     //   .catch(error => this.setState({ error }));
   //   }
