@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import style from './ImageGalleryItem.module.css';
 
 const ImageGalleryItem = ({ smImage, tags, handlePreview }) => {
@@ -9,10 +9,10 @@ const ImageGalleryItem = ({ smImage, tags, handlePreview }) => {
   );
 };
 
-// ImageGalleryItem.propTypes = {
-//   handlePreview: PropTypes.func.isRequired,
-//   tags: PropTypes.string.isRequired,
-//   smImage: PropTypes.string.isRequired,
-// };
+ImageGalleryItem.propTypes = {
+  // handlePreview: PropTypes.func.isRequired,
+  tags: PropTypes.string.isRequired,
+  smImage: PropTypes.string.isRequired,
+};
 
 export default ImageGalleryItem;

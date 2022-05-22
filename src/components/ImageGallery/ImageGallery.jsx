@@ -1,6 +1,6 @@
-import ImageGalleryItem from './ImageGalleryItem';
+import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import style from './ImageGallery.module.css';
 
 const ImageGallery = ({ images }) => {
@@ -23,16 +23,16 @@ const ImageGallery = ({ images }) => {
   );
 };
 
-// ImageGallery.propTypes = {
-//   handlePreview: PropTypes.func.isRequired,
-//   list: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.number.isRequired,
-//       largeImageURL: PropTypes.string.isRequired,
-//       webformatURL: PropTypes.string.isRequired,
-//       tags: PropTypes.string.isRequired,
-//     })
-//   ),
-// };
+ImageGallery.propTypes = {
+  // handlePreview: PropTypes.func.isRequired,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ),
+};
 
 export default ImageGallery;
