@@ -5,7 +5,7 @@ import style from './Modal.module.css';
 export default class Modal extends Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
-    smImage: PropTypes.string.isRequired,
+    lgImage: PropTypes.string.isRequired,
     tags: PropTypes.string.isRequired,
   };
 
@@ -30,11 +30,11 @@ export default class Modal extends Component {
   };
 
   render() {
-    const { smImage, tags } = this.props;
+    const { lgImage, tags } = this.props;
     return (
       <div className={style.Overlay} onClick={this.handleBackdropClick}>
         <div className={style.Modal}>
-          <img src={smImage} alt={tags} />
+          <img src={lgImage} alt={tags} />
         </div>
       </div>
     );

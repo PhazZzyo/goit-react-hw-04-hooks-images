@@ -1,7 +1,6 @@
 import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
-
-import PropTypes from 'prop-types';
 import style from './ImageGallery.module.css';
+import PropTypes from 'prop-types';
 
 const ImageGallery = ({ images, handlePreview }) => {
   const renderGallery = () =>
@@ -12,7 +11,6 @@ const ImageGallery = ({ images, handlePreview }) => {
         tags={tags}
         lgImage={largeImageURL}
         smImage={webformatURL}
-        // handlePreview={handlePreview}
         onClick={() => handlePreview(id)}
       />
     ));

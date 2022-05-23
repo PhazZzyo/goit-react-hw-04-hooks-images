@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-// import { Grid } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Modal from './ImageGallery/Modal/Modal';
 import Button from './Button/Button';
+import Loader from './Loader/Loader';
 import { fetchImages } from 'components/services/fetchImages';
 
 export default class App extends Component {
@@ -24,7 +23,6 @@ export default class App extends Component {
     const currentSearch = this.state.searchRequest;
     const prevGalleryPage = prevState.galleryPage;
     const currentGalleryPage = this.state.galleryPage;
-    console.log(this.state.isLoading);
 
     if (
       prevSearch !== currentSearch ||
@@ -37,23 +35,24 @@ export default class App extends Component {
   updateImages() {
     const { searchRequest, galleryPage } = this.state;
     this.setState({ isLoading: true });
-
-    try {
-      fetchImages(searchRequest, galleryPage).then(data => {
-        if (!data.data.hits.length) {
-          return toast.error(
-            'There is no images found with that search request'
-          );
-        }
-        this.setState({
-          images: [...this.state.images, ...data.data.hits],
+    setTimeout(() => {
+      try {
+        fetchImages(searchRequest, galleryPage).then(data => {
+          if (!data.data.hits.length) {
+            return toast.error(
+              'There is no images found with that search request'
+            );
+          }
+          this.setState({
+            images: [...this.state.images, ...data.data.hits],
+          });
         });
-      });
-    } catch (error) {
-      this.setState({ error });
-    } finally {
-      this.setState({ isLoading: false });
-    }
+      } catch (error) {
+        this.setState({ error });
+      } finally {
+        this.setState({ isLoading: false });
+      }
+    }, 1000);
   }
 
   handleSearchSubmit = searchRequest => {
@@ -89,10 +88,8 @@ export default class App extends Component {
     return (
       <>
         <Searchbar onSearch={this.handleSearchSubmit} />
-        {/* {images.length !== 0 && <ImageGallery images={images} />} */}
         {error && toast.error(`Whoops, something went wrong: ${error.message}`)}
-        {/* {toast.error('There is no images found with that search request')} */}
-        {isLoading && <p>Loading...</p>}
+        {isLoading && <Loader color={'#3f51b5'} size={32} />}
         {images.length > 0 && (
           <>
             <ImageGallery images={images} handlePreview={this.showModalImage} />
@@ -101,7 +98,7 @@ export default class App extends Component {
         )}
         {showModal && (
           <Modal
-            smImage={showModal.largeImageURL}
+            lgImage={showModal.largeImageURL}
             tags={showModal.tags}
             closeModal={this.closeModalImage}
           />
