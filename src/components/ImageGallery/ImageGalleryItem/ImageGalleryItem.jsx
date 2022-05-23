@@ -1,16 +1,21 @@
 import PropTypes from 'prop-types';
 import style from './ImageGalleryItem.module.css';
 
-const ImageGalleryItem = ({ smImage, tags, handlePreview }) => {
+const ImageGalleryItem = ({ smImage, tags, onClick }) => {
   return (
     <li className={style.ImageGalleryItem}>
-      <img className={style.ImageGalleryItem_image} src={smImage} alt={tags} />
+      <img
+        className={style.ImageGalleryItem_image}
+        src={smImage}
+        alt={tags}
+        onClick={onClick}
+      />
     </li>
   );
 };
 
 ImageGalleryItem.propTypes = {
-  // handlePreview: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   tags: PropTypes.string.isRequired,
   smImage: PropTypes.string.isRequired,
 };

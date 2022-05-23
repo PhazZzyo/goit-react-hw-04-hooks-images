@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
-// import { Modal } from './ImageGallery/Modal/Modal';
+import Modal from './ImageGallery/Modal/Modal';
 import Button from './Button/Button';
 import { fetchImages } from 'components/services/fetchImages';
 
@@ -16,6 +16,7 @@ export default class App extends Component {
     galleryPage: 1,
     error: null,
     isLoading: false,
+    showModal: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -69,8 +70,22 @@ export default class App extends Component {
     }));
   };
 
+  showModalImage = id => {
+    const image = this.state.images.find(image => image.id === id);
+    this.setState({
+      showModal: {
+        largeImageURL: image.largeImageURL,
+        tags: image.tags,
+      },
+    });
+  };
+
+  closeModalImage = () => {
+    this.setState({ showModal: null });
+  };
+
   render() {
-    const { images, isLoading, error } = this.state;
+    const { images, isLoading, error, showModal } = this.state;
     return (
       <>
         <Searchbar onSearch={this.handleSearchSubmit} />
@@ -80,9 +95,16 @@ export default class App extends Component {
         {isLoading && <p>Loading...</p>}
         {images.length > 0 && (
           <>
-            <ImageGallery images={images} />
+            <ImageGallery images={images} handlePreview={this.showModalImage} />
             <Button loadMore={this.loadMore} />
           </>
+        )}
+        {showModal && (
+          <Modal
+            smImage={showModal.largeImageURL}
+            tags={showModal.tags}
+            closeModal={this.closeModalImage}
+          />
         )}
         <ToastContainer autoClose={3000} />
       </>

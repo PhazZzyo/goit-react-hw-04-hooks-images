@@ -4,8 +4,8 @@ import style from './Modal.module.css';
 
 export default class Modal extends Component {
   static propTypes = {
-    onCloseModal: PropTypes.func.isRequired,
-    modalImg: PropTypes.string.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    smImage: PropTypes.string.isRequired,
     tags: PropTypes.string.isRequired,
   };
 
@@ -19,22 +19,22 @@ export default class Modal extends Component {
 
   handleKeyDown = element => {
     if (element.code === 'Escape') {
-      this.props.onCloseModal();
+      this.props.closeModal();
     }
   };
 
   handleBackdropClick = event => {
     if (event.currentTarget === event.target) {
-      this.props.onCloseModal();
+      this.props.closeModal();
     }
   };
 
   render() {
-    const { modalImg, tags } = this.props;
+    const { smImage, tags } = this.props;
     return (
-      <div className={style.overlay} onClick={this.handleBackdropClick}>
+      <div className={style.Overlay} onClick={this.handleBackdropClick}>
         <div className={style.Modal}>
-          <img src={modalImg} alt={tags} />
+          <img src={smImage} alt={tags} />
         </div>
       </div>
     );

@@ -3,7 +3,7 @@ import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import PropTypes from 'prop-types';
 import style from './ImageGallery.module.css';
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images, handlePreview }) => {
   const renderGallery = () =>
     images.map(({ id, largeImageURL, webformatURL, tags }) => (
       <ImageGalleryItem
@@ -13,6 +13,7 @@ const ImageGallery = ({ images }) => {
         lgImage={largeImageURL}
         smImage={webformatURL}
         // handlePreview={handlePreview}
+        onClick={() => handlePreview(id)}
       />
     ));
 
@@ -24,7 +25,7 @@ const ImageGallery = ({ images }) => {
 };
 
 ImageGallery.propTypes = {
-  // handlePreview: PropTypes.func.isRequired,
+  handlePreview: PropTypes.func.isRequired,
   images: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
