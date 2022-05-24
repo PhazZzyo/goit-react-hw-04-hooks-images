@@ -43,8 +43,16 @@ export default class App extends Component {
               'There is no images found with that search request'
             );
           }
+          const mappedImages = data.data.hits.map(
+            ({ id, webformatURL, tags, largeImageURL }) => ({
+              id,
+              webformatURL,
+              tags,
+              largeImageURL,
+            })
+          );
           this.setState({
-            images: [...this.state.images, ...data.data.hits],
+            images: [...this.state.images, ...mappedImages],
           });
         });
       } catch (error) {

@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 
 const ImageGallery = ({ images, handlePreview }) => {
   const renderGallery = () =>
-    images.map(({ id, largeImageURL, webformatURL, tags }) => (
+    images.map(({ id, webformatURL, tags }) => (
       <ImageGalleryItem
         className={style.ImageGalleryItem}
         key={id}
         tags={tags}
-        lgImage={largeImageURL}
         smImage={webformatURL}
         onClick={() => handlePreview(id)}
       />
@@ -27,7 +26,6 @@ ImageGallery.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
       webformatURL: PropTypes.string.isRequired,
       tags: PropTypes.string.isRequired,
     })
