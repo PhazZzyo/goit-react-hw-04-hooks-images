@@ -62,7 +62,6 @@ export const App = () => {
   };
 
   const loadMore = () => {
-    // <button onClick={() => setValue(value + 1)}>{value}</button>;
     setGalleryPage(galleryPage + 1);
   };
 
