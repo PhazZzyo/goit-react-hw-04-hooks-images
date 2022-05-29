@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from './Searchbar/Searchbar';
@@ -8,36 +8,27 @@ import Button from './Button/Button';
 import Loader from './Loader/Loader';
 import { fetchImages } from 'components/services/fetchImages';
 
-export default class App extends Component {
-  state = {
-    searchRequest: '',
-    images: [],
-    galleryPage: 1,
-    error: null,
-    isLoading: false,
-    showModal: null,
-  };
+export const App = () => {
+  const [searchRequest, setSearchRequest] = useState('');
+  const [images, setImages] = useState([]);
+  const [galleryPage, setGalleryPage] = useState(1);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevSearch = prevState.searchRequest;
-    const currentSearch = this.state.searchRequest;
-    const prevGalleryPage = prevState.galleryPage;
-    const currentGalleryPage = this.state.galleryPage;
-
-    if (
-      prevSearch !== currentSearch ||
-      prevGalleryPage !== currentGalleryPage
-    ) {
-      this.updateImages();
+  useEffect(() => {
+    if (searchRequest !== '' || galleryPage !== 1) {
+      updateImages(searchRequest, galleryPage);
     }
-  }
+  }, [searchRequest, galleryPage]);
 
-  updateImages() {
-    const { searchRequest, galleryPage } = this.state;
-    this.setState({ isLoading: true });
+  const updateImages = (searchRequest, galleryPage) => {
+    setIsLoading(true);
+
     setTimeout(() => {
       try {
         fetchImages(searchRequest, galleryPage).then(data => {
+          console.log(data);
           if (!data.data.hits.length) {
             return toast.error(
               'There is no images found with that search request'
@@ -51,68 +42,59 @@ export default class App extends Component {
               largeImageURL,
             })
           );
-          this.setState({
-            images: [...this.state.images, ...mappedImages],
-          });
+          setImages([...images, ...mappedImages]);
         });
       } catch (error) {
-        this.setState({ error });
+        setError(error);
       } finally {
-        this.setState({ isLoading: false });
+        setIsLoading(false);
       }
     }, 1000);
-  }
+  };
 
-  handleSearchSubmit = searchRequest => {
-    this.setState({
-      searchRequest,
-      images: [],
-      galleryPage: 1,
+  const handleSearchSubmit = value => {
+    if (value !== searchRequest) {
+      setSearchRequest(value);
+      setImages([]);
+      setGalleryPage(1);
+      return;
+    }
+  };
+
+  const loadMore = () => {
+    // <button onClick={() => setValue(value + 1)}>{value}</button>;
+    setGalleryPage(galleryPage + 1);
+  };
+
+  const showModalImage = id => {
+    const image = images.find(image => image.id === id);
+    showModal({
+      largeImageURL: image.largeImageURL,
+      tags: image.tags,
     });
   };
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      galleryPage: prevState.galleryPage + 1,
-    }));
+  const closeModalImage = () => {
+    setShowModal(null);
   };
 
-  showModalImage = id => {
-    const image = this.state.images.find(image => image.id === id);
-    this.setState({
-      showModal: {
-        largeImageURL: image.largeImageURL,
-        tags: image.tags,
-      },
-    });
-  };
-
-  closeModalImage = () => {
-    this.setState({ showModal: null });
-  };
-
-  render() {
-    const { images, isLoading, error, showModal } = this.state;
-    return (
-      <>
-        <Searchbar onSearch={this.handleSearchSubmit} />
-        {error && toast.error(`Whoops, something went wrong: ${error.message}`)}
-        {isLoading && <Loader color={'#3f51b5'} size={32} />}
-        {images.length > 0 && (
-          <>
-            <ImageGallery images={images} handlePreview={this.showModalImage} />
-            <Button loadMore={this.loadMore} />
-          </>
-        )}
-        {showModal && (
-          <Modal
-            lgImage={showModal.largeImageURL}
-            tags={showModal.tags}
-            closeModal={this.closeModalImage}
-          />
-        )}
-        <ToastContainer autoClose={3000} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Searchbar onSearch={handleSearchSubmit} />
+      {error && toast.error(`Whoops, something went wrong: ${error.message}`)}
+      {isLoading && <Loader color={'#3f51b5'} size={32} />}
+      {images.length > 0 && (
+        <ImageGallery images={images} handlePreview={showModalImage} />
+      )}
+      {images.length >= 12 && <Button loadMore={loadMore} />}
+      {showModal && (
+        <Modal
+          lgImage={showModal.largeImageURL}
+          tags={showModal.tags}
+          closeModal={closeModalImage}
+        />
+      )}
+      <ToastContainer autoClose={3000} />
+    </>
+  );
+};

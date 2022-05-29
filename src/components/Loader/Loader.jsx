@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 
 const Loader = ({ color, size }) => {
   return (
-    <div className={style.Loader}>
-      <HollowDotsSpinner color={color} size={size} />
+    <div className={style.Background}>
+      <div className={style.Loader}>
+        <HollowDotsSpinner color={color} size={size} />
+      </div>
     </div>
   );
 };
