@@ -66,9 +66,9 @@ export const App = () => {
     setGalleryPage(galleryPage + 1);
   };
 
-  const showModalImage = id => {
+  const openModalImage = id => {
     const image = images.find(image => image.id === id);
-    showModal({
+    setShowModal({
       largeImageURL: image.largeImageURL,
       tags: image.tags,
     });
@@ -84,7 +84,7 @@ export const App = () => {
       {error && toast.error(`Whoops, something went wrong: ${error.message}`)}
       {isLoading && <Loader color={'#3f51b5'} size={32} />}
       {images.length > 0 && (
-        <ImageGallery images={images} handlePreview={showModalImage} />
+        <ImageGallery images={images} handlePreview={openModalImage} />
       )}
       {images.length >= 12 && <Button loadMore={loadMore} />}
       {showModal && (
