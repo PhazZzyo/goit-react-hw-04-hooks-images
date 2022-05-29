@@ -4,8 +4,8 @@ import style from './Modal.module.css';
 
 const Modal = (lgImage, tags, closeModal) => {
   useEffect(() => {
-    const handleKeyDown = element => {
-      if (element.code === 'Escape') {
+    const handleKeyDown = event => {
+      if (event.code === 'Escape') {
         closeModal();
       }
     };
