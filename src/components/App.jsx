@@ -17,39 +17,37 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (searchRequest === '' || galleryPage === 1) {
-      return;
-    }
+    const updateImages = (searchRequest, galleryPage) => {
+      setIsLoading(true);
 
-    setIsLoading(true);
-
-    setTimeout(() => {
-      try {
-        fetchImages(searchRequest, galleryPage).then(data => {
-          console.log(data);
-          if (!data.data.hits.length) {
-            return toast.error(
-              'There is no images found with that search request'
+      setTimeout(() => {
+        try {
+          fetchImages(searchRequest, galleryPage).then(data => {
+            console.log(data);
+            if (!data.data.hits.length) {
+              return toast.error(
+                'There is no images found with that search request'
+              );
+            }
+            const mappedImages = data.data.hits.map(
+              ({ id, webformatURL, tags, largeImageURL }) => ({
+                id,
+                webformatURL,
+                tags,
+                largeImageURL,
+              })
             );
-          }
-          const mappedImages = data.data.hits.map(
-            ({ id, webformatURL, tags, largeImageURL }) => ({
-              id,
-              webformatURL,
-              tags,
-              largeImageURL,
-            })
-          );
-          updateImages(mappedImages);
-        });
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 1000);
-    function updateImages(mappedImages) {
-      setImages(i => [...i, ...mappedImages]);
+            setImages(i => [...i, ...mappedImages]);
+          });
+        } catch (error) {
+          setError(error);
+        } finally {
+          setIsLoading(false);
+        }
+      }, 1000);
+    };
+    if (searchRequest !== '' || galleryPage !== 1) {
+      updateImages(searchRequest, galleryPage);
     }
   }, [searchRequest, galleryPage]);
 
