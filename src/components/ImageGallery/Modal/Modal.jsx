@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import style from './Modal.module.css';
 
-const Modal = (lgImage, tags, closeModal) => {
+const Modal = ({ lgImage, tags, closeModal }) => {
   useEffect(() => {
     const handleKeyDown = event => {
       if (event.code === 'Escape') {

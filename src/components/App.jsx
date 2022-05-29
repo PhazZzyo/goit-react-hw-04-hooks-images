@@ -23,7 +23,6 @@ export const App = () => {
       setTimeout(() => {
         try {
           fetchImages(searchRequest, galleryPage).then(data => {
-            console.log(data);
             if (!data.data.hits.length) {
               return toast.error(
                 'There is no images found with that search request'
@@ -50,36 +49,6 @@ export const App = () => {
       updateImages(searchRequest, galleryPage);
     }
   }, [searchRequest, galleryPage]);
-
-  // const updateImages = (searchRequest, galleryPage) => {
-  //   setIsLoading(true);
-
-  //   setTimeout(() => {
-  //     try {
-  //       fetchImages(searchRequest, galleryPage).then(data => {
-  //         console.log(data);
-  //         if (!data.data.hits.length) {
-  //           return toast.error(
-  //             'There is no images found with that search request'
-  //           );
-  //         }
-  //         const mappedImages = data.data.hits.map(
-  //           ({ id, webformatURL, tags, largeImageURL }) => ({
-  //             id,
-  //             webformatURL,
-  //             tags,
-  //             largeImageURL,
-  //           })
-  //         );
-  //         setImages([...images, ...mappedImages]);
-  //       });
-  //     } catch (error) {
-  //       setError(error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }, 1000);
-  // };
 
   const handleSearchSubmit = value => {
     if (value !== searchRequest) {
