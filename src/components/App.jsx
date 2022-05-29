@@ -17,12 +17,10 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (searchRequest !== '' || galleryPage !== 1) {
-      updateImages(searchRequest, galleryPage);
+    if (searchRequest === '' || galleryPage === 1) {
+      return;
     }
-  }, [searchRequest, galleryPage]);
 
-  const updateImages = (searchRequest, galleryPage) => {
     setIsLoading(true);
 
     setTimeout(() => {
@@ -42,7 +40,7 @@ export const App = () => {
               largeImageURL,
             })
           );
-          setImages([...images, ...mappedImages]);
+          updateImages(mappedImages);
         });
       } catch (error) {
         setError(error);
@@ -50,7 +48,40 @@ export const App = () => {
         setIsLoading(false);
       }
     }, 1000);
-  };
+    function updateImages(mappedImages) {
+      setImages(i => [...i, ...mappedImages]);
+    }
+  }, [searchRequest, galleryPage]);
+
+  // const updateImages = (searchRequest, galleryPage) => {
+  //   setIsLoading(true);
+
+  //   setTimeout(() => {
+  //     try {
+  //       fetchImages(searchRequest, galleryPage).then(data => {
+  //         console.log(data);
+  //         if (!data.data.hits.length) {
+  //           return toast.error(
+  //             'There is no images found with that search request'
+  //           );
+  //         }
+  //         const mappedImages = data.data.hits.map(
+  //           ({ id, webformatURL, tags, largeImageURL }) => ({
+  //             id,
+  //             webformatURL,
+  //             tags,
+  //             largeImageURL,
+  //           })
+  //         );
+  //         setImages([...images, ...mappedImages]);
+  //       });
+  //     } catch (error) {
+  //       setError(error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }, 1000);
+  // };
 
   const handleSearchSubmit = value => {
     if (value !== searchRequest) {
